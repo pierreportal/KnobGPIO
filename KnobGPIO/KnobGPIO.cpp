@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <iostream>
-// #include <pigpio.h>
+#include <pigpio.h>
 
 #define SPI_CHANNEL 0
 #define SPI_SPEED 500000
@@ -19,7 +19,7 @@ int read_adc(int channel)
     char tx[3] = {1, (char)((8 + channel) << 4), 0};
     char rx[3] = {0};
 
-    // spiXfer(SPI_CHANNEL, tx, rx, 3);
+    spiXfer(SPI_CHANNEL, tx, rx, 3);
     return ((rx[1] & 3) << 8) + rx[2];
 }
 
@@ -29,14 +29,14 @@ class KnobGPIO
 public:
     KnobGPIO() : channel(0)
     {
-        // gpioInitialise();
-        // spiOpen(SPI_CHANNEL, SPI_SPEED, 0);
+        gpioInitialise();
+        spiOpen(SPI_CHANNEL, SPI_SPEED, 0);
     }
 
     ~KnobGPIO()
     {
-        // spiClose(SPI_CHANNEL);
-        // gpioTerminate();
+        spiClose(SPI_CHANNEL);
+        gpioTerminate();
     }
 
     void setChannel(int chan)

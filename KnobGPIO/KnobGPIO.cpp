@@ -19,7 +19,11 @@ int read_adc(int channel)
     char tx[3] = {1, (char)((8 + channel) << 4), 0};
     char rx[3] = {0};
 
-    spiXfer(SPI_CHANNEL, tx, rx, 3);
+    if (spiXfer(SPI_CHANNEL, tx, rx, 3) < 0)
+    {
+        std::cerr << "SPI transfer error!" << std::endl;
+        return -1;
+    }
     return ((rx[1] & 3) << 8) + rx[2];
 }
 
@@ -85,9 +89,8 @@ t_CKINT knobgpio_data_offset = 0;
 
 CK_DLL_CTOR(knobgpio_ctor)
 {
-    OBJ_MEMBER_INT(SELF, knobgpio_data_offset) = 0;
-    KnobGPIO *bcdata = new KnobGPIO();
-    OBJ_MEMBER_INT(SELF, knobgpio_data_offset) = (t_CKINT)bcdata;
+    KnobGPIO *knob = new KnobGPIO();
+    OBJ_MEMBER_INT(SELF, knobgpio_data_offset) = (t_CKINT)knob;
 }
 
 CK_DLL_DTOR(knobgpio_dtor)
@@ -109,6 +112,9 @@ CK_DLL_MFUN(knobgpio_setChannel)
 
 CK_DLL_TICK(knobgpio_tick)
 {
-    KnobGPIO *knob = (KnobGPIO *)OBJ_MEMBER_INT(SELF, 0);
-    return knob->tick(NULL, out, 16);
+    KnobGPIO *knob = (KnobGPIO *)OBJ_MEMBER_INT(SELF, knobgpio_data_offset);
+    if (!knob)
+        return FALSE;
+
+    return knob->tick(in, out, nframes);
 }

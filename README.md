@@ -17,6 +17,21 @@ The MCP3008 is a 10-bit Analog-to-Digital Converter (ADC) chip that allows micro
 | **DGND (9)**  | **GND (Pin 6)**                                                |
 | **CH0 - CH7** | **Connect to potentiometer middle pin or other analog sensor** |
 
+
+
+```
+       _______
+CH0 --|1  ° 16|-- VDD     -> 3.3v
+CH1 --|2    15|-- VREF    -> 3.3v
+CH2 --|3    14|-- AGND    -> gnd
+CH3 --|4    13|-- CLK     -> GPIO11 (SPI CLK, Pin 23)
+CH4 --|5    12|-- DOUT    -> GPIO9 (SPI MISO, Pin 21)
+CH5 --|6    11|-- DIN     -> GPIO10 (SPI MISO, Pin 19)
+CH6 --|7    10|-- CS/SHDN -> GPIO8 (SPI CE0, Pin 24)
+CH7 --|8_____9|-- DGND    -> gnd
+```
+
+
 ## Install 
 
 On linux

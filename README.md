@@ -1,3 +1,6 @@
+# KnobGPIO
+
+Plugin for the [ChucK programming language](https://chuck.stanford.edu/).
 
 ## Prerequisite
 

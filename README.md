@@ -55,6 +55,8 @@ sudo make install
 
 ## Usage
 
+### Basic Usage
+
 ```cpp
 KnobGPIO knob;
 
@@ -63,3 +65,30 @@ while (true)
     <<< knob.last() >>>;
 }
 ```
+
+### Advanced Usage
+
+```cpp
+KnobGPIO knob;
+
+// Set ADC channel (0-7, automatically clamped if out of range)
+knob.setChannel(0);
+
+// Optional: Adjust update rate for performance tuning
+// Default is 441 frames (~100Hz at 44.1kHz sample rate)
+// Lower values = more responsive, higher CPU usage
+// Higher values = less CPU usage, slower response
+knob.setUpdateRate(220);  // ~200Hz update rate
+
+while (true)
+{
+    <<< knob.last() >>>;
+}
+```
+
+### Features
+
+- **Channel Validation**: Channels are automatically clamped to valid range (0-7)
+- **Error Handling**: Graceful fallback if GPIO/SPI initialization fails
+- **Performance Optimization**: ADC reads are throttled to reduce CPU usage while maintaining responsiveness
+- **Robust Operation**: Continues outputting last valid value if ADC read errors occur
